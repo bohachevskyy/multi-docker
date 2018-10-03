@@ -10,10 +10,10 @@ script:
 
 after_success:
   # build containers
-  - docker build bohachevskyy/multi-client ./client
-  - docker build bohachevskyy/multi-nginx ./nginx
-  - docker build bohachevskyy/multi-server ./server
-  - docker build bohachevskyy/multi-worker ./worker
+  - docker build -t bohachevskyy/multi-client ./client
+  - docker build -t bohachevskyy/multi-nginx ./nginx
+  - docker build -t bohachevskyy/multi-server ./server
+  - docker build -t bohachevskyy/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # push images to docker hub
