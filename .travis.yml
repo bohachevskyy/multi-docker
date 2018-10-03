@@ -1,0 +1,23 @@
+sudo: require
+services:
+  - docker
+
+before_install:
+  - docker build -t bohachevskyy/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run bohachevskyy/react-test npm test -- --coverage
+
+after_success:
+  # build containers
+  - docker build bohachevskyy/multi-client ./client
+  - docker build bohachevskyy/multi-nginx ./nginx
+  - docker build bohachevskyy/multi-server ./server
+  - docker build bohachevskyy/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push images to docker hub
+  - docker push bohachevskyy/multi-client
+  - docker push bohachevskyy/multi-nginx
+  - docker push bohachevskyy/multi-server
+  - docker push bohachevskyy/multi-worker
